@@ -7,15 +7,168 @@
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils_3d/control_utils_3d.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js" crossorigin="anonymous"></script>
+<style>
+    #canvasShader {
+        position:fixed;
+        z-index:10000;
+        top:0;
+    }
+</style>
 </head>
 
 <body>
   <div class="container">
     <video class="input_video"></video>
-    <canvas class="output_canvas" width="1280px" height="720px"></canvas>
+    <canvas class="output_canvas" width="1920px" height="1080px"></canvas>
     <div class="landmark-grid-container"></div>
   </div>
+  <canvas id="canvasShader"></canvas>
 </body>
+<script id="fragment-shader" type="x-shader/x-fragment">
+    #ifdef GL_ES
+      precision mediump float;
+    #endif
+
+    uniform vec2 u_resolution;
+    uniform vec2 u_mouse;
+    uniform float u_time;
+
+    float lessCoord = min( u_resolution.x, u_resolution.y );
+    vec2 resRatio = u_resolution / vec2( lessCoord );
+
+    void main() {
+      vec2 grad = abs( ( gl_FragCoord.xy  - u_mouse ) / u_resolution * resRatio );
+      // could do something fun with u_time
+       float theta = sin( u_time ) * 0.5 + 0.5;
+      float screenX = gl_FragCoord.x / u_resolution.x;
+      float screenY = gl_FragCoord.y / u_resolution.y;
+      vec2 st = gl_FragCoord.xy / u_resolution;
+      float pct = 0.0;
+      pct = distance(st, vec2(.5));
+      gl_FragColor = vec4( mix(pct,grad.x,grad.x),pct, mix(grad.y,pct,grad.y), .5 );
+    }
+</script>
+<script id="vertex-shader" type="x-shader/x-vertex">
+attribute vec2 a_position;
+
+void main() {
+  gl_Position = vec4( a_position, 0, 1 );
+}
+</script>
+    <script>
+var canvas = document.getElementById('canvasShader');
+var gl = canvas.getContext('webgl');
+var width, height;
+var mouseX = 0;
+var mouseY = 0;
+var startTime = new Date().getTime(); // Get start time for animating
+
+// ----- Uniform ----- //
+
+function Uniform( name, suffix ) {
+  this.name = name;
+  this.suffix = suffix;
+  this.location = gl.getUniformLocation( program, name );
+}
+
+Uniform.prototype.set = function( ...values ) {
+  var method = 'uniform' + this.suffix;
+  var args = [ this.location ].concat( values );
+  gl[ method ].apply( gl, args );
+};
+
+// ----- Rect ----- //
+
+function Rect( gl ) {
+  var buffer = gl.createBuffer();
+  gl.bindBuffer( gl.ARRAY_BUFFER, buffer );
+  gl.bufferData( gl.ARRAY_BUFFER, Rect.verts, gl.STATIC_DRAW );
+}
+
+Rect.verts = new Float32Array([
+  -1, -1,
+   1, -1,
+  -1,  1,
+   1,  1,
+]);
+
+Rect.prototype.render = function( gl ) {
+  gl.drawArrays( gl.TRIANGLE_STRIP, 0, 4 );
+};
+
+// ----- init WebGL ----- //
+
+// create program
+var program = gl.createProgram();
+// add shaders
+var vertexShaderSource = document.querySelector('#vertex-shader').text;
+var fragmentShaderSource = document.querySelector('#fragment-shader').text;
+addShader( vertexShaderSource, gl.VERTEX_SHADER );
+addShader( fragmentShaderSource, gl.FRAGMENT_SHADER );
+// link & use program
+gl.linkProgram( program );
+gl.useProgram( program );
+
+// create fragment uniforms
+var uResolution = new Uniform( 'u_resolution', '2f' );
+var uMouse = new Uniform( 'u_mouse', '2f' );
+var uTime = new Uniform( 'u_time', '1f' );
+// create position attrib
+var billboard = new Rect( gl );
+var positionLocation = gl.getAttribLocation( program, 'a_position' );
+gl.enableVertexAttribArray( positionLocation );
+gl.vertexAttribPointer( positionLocation, 2, gl.FLOAT, false, 0, 0 );
+
+resize();
+animate();
+
+// ----- addShader ----- //
+
+function addShader( source, type ) {
+  var shader = gl.createShader( type );
+  gl.shaderSource( shader, source );
+  gl.compileShader( shader );
+  var isCompiled = gl.getShaderParameter( shader, gl.COMPILE_STATUS );
+  if ( !isCompiled ) {
+    throw new Error( 'Shader compile error: ' + gl.getShaderInfoLog( shader ) );
+  }
+  gl.attachShader( program, shader );
+}
+
+// ----- render ----- //
+
+function animate() {
+  // update
+  var now = new Date().getTime();
+  var currentTime = ( now - startTime ) / 1000;
+  uTime.set( currentTime );
+  //uMouse.set( mouseX, mouseY );
+  //console.log(uMouse);
+  // render
+  billboard.render( gl );
+  // animate next frame
+  requestAnimationFrame( animate );
+}
+
+// ----- resize ----- //
+
+function resize() {
+  width = canvas.width  = window.innerWidth;
+  height = canvas.height = window.innerHeight;
+  uResolution.set( width, height );
+  gl.viewport( 0, 0, width, height );
+}
+
+window.addEventListener( 'resize', resize );
+
+// ----- mouse move ----- //
+
+document.addEventListener( 'mousemove', function( event ) {
+  mouseX = event.pageX;
+  mouseY = height - event.pageY;
+});
+
+    </script>
 <script type="module">
     if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
   console.log("enumerateDevices() not supported.");
@@ -66,6 +219,10 @@ function onResults(results) {
                  {color: '#00FF00', lineWidth: 4});
   drawLandmarks(canvasCtx, results.poseLandmarks,
                 {color: '#FF0000', lineWidth: 2});
+  let nose = results.poseLandmarks[16];
+  uMouse.set(nose.x*2000, nose.y*-2500);
+  //console.log(uMouse);
+  animate();
   canvasCtx.restore();
 
   grid.updateLandmarks(results.poseWorldLandmarks);
