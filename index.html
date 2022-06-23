@@ -14,11 +14,11 @@
     overflow:hidden;
     }
     .output_canvas {
-        z-index:0;
+        z-index:1;
     }
     #canvasShader {
         position:fixed;
-        z-index:1;
+        z-index:0;
         top:0;
         left:0;
     }
@@ -50,7 +50,9 @@
 
     uniform vec2 u_resolution;
     uniform vec2 u_mouse;
+    uniform vec2 u_left;
     uniform float u_time;
+    uniform float u_touch;
 
     float lessCoord = min( u_resolution.x, u_resolution.y );
     vec2 resRatio = u_resolution / vec2( lessCoord );
@@ -58,13 +60,14 @@
     void main() {
       vec2 grad = abs( ( gl_FragCoord.xy  - u_mouse ) / u_resolution * resRatio );
       // could do something fun with u_time
-      // float theta = sin( u_time ) * 0.5 + 0.5;
+      float theta = .5;
+      if (u_touch==1.){ theta = 1./((u_left.x+.2)*abs(sin(u_time)));} //sin( u_time ) * 0.5 + 0.5;}
       float screenX = gl_FragCoord.x / u_resolution.x;
       float screenY = gl_FragCoord.y / u_resolution.y;
       vec2 st = gl_FragCoord.xy / u_resolution;
       float pct = 0.0;
       pct = distance(st, vec2(.5));
-      gl_FragColor = vec4( mix(pct,grad.x,grad.x),pct, mix(grad.y,pct,grad.y), .5 );
+      gl_FragColor = vec4( mix(pct,grad.x,grad.x),.1, mix(grad.y,pct,grad.y), theta );
     }
   </script>
   <script id="vertex-shader" type="x-shader/x-vertex">
@@ -132,6 +135,8 @@
     var uResolution = new Uniform( 'u_resolution', '2f' );
     var uMouse = new Uniform( 'u_mouse', '2f' );
     var uTime = new Uniform( 'u_time', '1f' );
+    var uLeft = new Uniform( 'u_left', '2f' );
+    var uTouch = new Uniform( 'u_touch', '1f' );
     // create position attrib
     var billboard = new Rect( gl );
     var positionLocation = gl.getAttribLocation( program, 'a_position' );

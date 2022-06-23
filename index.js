@@ -17,7 +17,7 @@ const grid = new LandmarkGrid(landmarkContainer,
 }
 
 );
-console.log(grid);
+//console.log(grid);
 
 function onResults(results) {
   if (!results.poseLandmarks) {
@@ -47,7 +47,25 @@ function onResults(results) {
   drawLandmarks(canvasCtx, results.poseLandmarks,
                 {color: '#FF0000', lineWidth: 2});
   let right_hand = results.poseLandmarks[16];
+  let left_hand = results.poseLandmarks[15];
+    //console.log(left_hand);
+  //uLeft.set(left_hand.x, left_hand.y);
   uMouse.set(right_hand.x*2000, right_hand.y*-2500);
+    let distance = Math.abs(Math.abs(right_hand.x)-Math.abs(left_hand.x))
+    let hasInfo = (left_hand.x>0 && right_hand.x>0);
+    //console.log(distance);
+    if ( hasInfo && distance<.03){
+        console.log("touch ");
+        uTouch.set(1.);
+        uLeft.set(distance,distance);
+        //setTimeout(function() { uTouch.set(0.);console.log("timeout!")}, 2000);
+    }
+    if (hasInfo && distance>.2){
+        uTouch.set(0.)
+    }
+    //else if ((left_hand.x>0 && right_hand.x>0) && distance>.1){
+    //    uTouch.set(0.);
+    //}
   //console.log(uMouse);
   animate();
   canvasCtx.restore();
