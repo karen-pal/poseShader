@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Bitácora de desarrollo, o qué es programar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.2/styles/atom-one-dark.min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
+    <style>
+    body {
+        background-image: url("notas_3.jpeg");
+        background-repeat: no-repeat;
+
+        min-height: 100%;
+        margin:0px;
+        width:100vw;
+        height:100vh;
+        overflow:auto;
+        font-family: 'Roboto Mono', monospace;
+        position:absolute;
+    }
+    h1,h2 {
+        background-color: black;
+        color:white;
+        text-align: center;
+        position:relative;
+    }
+    #collage{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: 1fr;
+        grid-column-gap: 0px;
+        grid-row-gap: 0px;
+        grid-template-areas:
+            "ytvideo land";
+    }
+    #land {
+        grid-area:land;
+    }
+    #video {
+        grid-area:ytvideo;
+    }
+    </style>
+  </head>
+  <body>
+      <h1 id="title">Bitácora de desarrollo, o qué es programar.</h1>
+      <h2 id="desc"> 2022 - Córdoba, Argentina - Karen Palacio </h2>
+      <div id="collage">
+      <iframe width="420" height="720" id="video"
+src="https://www.youtube.com/embed/ARQzF9ADLfk?autoplay=1&mute=1&controls=0&loop=1&playlist=ARQzF9ADLfk">
+</iframe>
+<img id="land" src="pose_tracking_full_body_landmarks.png"></img>
+      </div>
+<pre><code class="language-js">let preguntas = [
+            "¿Cómo hacer arte digital y computacional comprometido con la idea de construcción social de sentidos?",
+            "...en una sociedad con acceso desigual a información tecnológica y poder de aprehensión de la tecnología?",
+            "...en una provincia “del interior”, sin mercado ni vías de distribución y puesta en circulación de arte digital?",
+            "...siendo mujer en tecnología, donde la brecha tecnológica aumenta?",
+
+        ]
+let delArte = [
+            "¿Cómo hacer arte digital y computacional abierto y movilizante, que hable nuestros lenguajes y que trate nuestros temas?",
+            "¿Cuáles son nuestros lenguajes?<br> ¿Cuáles son nuestros temas?<br> ¿Qué hay más allá de las desigualdades y brechas?",
+            "Producir arte digital <br>¿Como acto comunicativo (¿entre quiénes?)?<br> ¿Como acto de denuncia (¿de qué y ante quién?)?",
+            "Producir arte digital <br>¿Como acto de proposición de signos producidos con intención (¿qué intención?)?<br> ¿Como código a descifrar (¿para qué?)?",
+            "Producir arte digital <br>¿Como resultado de procesos sociales de relacionarse desde el cuerpo y mente con conceptos, ideas, normativas (¿de qué cuerpos, de qué mentes?)? <br>¿Como artefacto que posibilite la comunicación y la formación de saberes colectivos (¿de qué grupos?)?",
+            "Ante la falta de espacios con continuidad que posibilite experimentación real artística en Córdoba,<br> ¿cómo poner en circulación algo que proponga?",
+        ]
+</code></pre>
+<h1> Diseño de la instalación </h1>
+<h1> interactuar con el sistema <a href="">acá</a></h1>
+<h1> ver historial de cambios del sistema <a href="">acá</a></h1>
+  </body>
+	<script>hljs.highlightAll();</script>
+</html>
