@@ -13,14 +13,18 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
     <style>
     body {
-        background-image: url("notas_3.jpeg");
+        background-image: url("screen.png");
         background-repeat: no-repeat;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
 
         min-height: 100%;
         margin:0px;
         width:100vw;
         height:100vh;
-        overflow:auto;
+        overflow-x:hidden;
         font-family: 'Roboto Mono', monospace;
         position:absolute;
     }
@@ -32,8 +36,8 @@
     }
     #collage{
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: 1fr;
+        grid-template-rows: repeat(auto-fill, 1fr);
+        grid-template-columns: 1fr ;
         grid-column-gap: 0px;
         grid-row-gap: 0px;
         grid-template-areas:
@@ -45,17 +49,24 @@
     #video {
         grid-area:ytvideo;
     }
+    #notas, #screen {
+ display: block;
+  margin-left: auto;
+  margin-right: auto;
+    }
     </style>
   </head>
   <body>
       <h1 id="title">Bitácora de desarrollo, o qué es programar.</h1>
       <h2 id="desc"> 2022 - Córdoba, Argentina - Karen Palacio </h2>
       <div id="collage">
-      <iframe width="420" height="720" id="video"
-src="https://www.youtube.com/embed/ARQzF9ADLfk?autoplay=1&mute=1&controls=0&loop=1&playlist=ARQzF9ADLfk">
-</iframe>
-<img id="land" src="pose_tracking_full_body_landmarks.png"></img>
+          <iframe width="520" height="720" id="video"
+            src="https://www.youtube.com/embed/ARQzF9ADLfk?autoplay=1&mute=1&controls=0&loop=1&playlist=ARQzF9ADLfk">
+          </iframe>
+          <img id="land" src="land.png"></img>
       </div>
+      <img id="notas" src="notas_3.jpeg"></img>
+      <img id="screen" src="screen.png"></img>
 <pre><code class="language-js">let preguntas = [
             "¿Cómo hacer arte digital y computacional comprometido con la idea de construcción social de sentidos?",
             "...en una sociedad con acceso desigual a información tecnológica y poder de aprehensión de la tecnología?",
