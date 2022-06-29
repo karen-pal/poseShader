@@ -13,7 +13,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
     <style>
     body {
-        background-image: url("screen.png");
+        --background-image: url("screen.png");
         background-repeat: no-repeat;
         -webkit-background-size: cover;
         -moz-background-size: cover;
@@ -72,13 +72,22 @@
          margin-left: auto;
          margin-right: auto;
     }
+    #rojo {
+    color:#e77979;
+    }
+    #verde {
+    color:#a0ffa0;
+    }
+    #azul {
+    color:blue;
+    }
     </style>
   </head>
   <body>
-      <h1 id="title">Bitácora de desarrollo, o qué es programar.</h1>
-      <h2 id="desc"> 2022 - Córdoba, Argentina - Karen Palacio </h2>
+      <h1 id="title">Bitácora de desarrollo, o <span id="rojo">qué</span> <span id="verde">es</span> <span id="azul">programar.</span></h1>
+      <h2 id="desc"> 2022 - Córdoba, Argentina - Karen Palacio <div>Página del proyecto</div></h2>
       <h1 id="title">Sobre el proyecto</h1>
-      <h2>Instalación interactiva de un sistema que a través de reconocimiento de gestos controla gráficos sintetizados en tiempo real. A la par se muestran videos y notas de desarrollo que hablan sobre los procesos, estudios y las tomas de decisiones ocultas detrás del software. Se puede interactuar con el software en distintos puntos de desarrollo.</h2>
+      <h2>Instalación interactiva de un sistema que, a través de reconocimiento de gestos, controla gráficos sintetizados en tiempo real. A la par se muestran videos y notas de desarrollo que hablan sobre los procesos, estudios y las tomas de decisiones ocultas detrás del software. Se puede interactuar con el software en distintos puntos de desarrollo.</h2>
       <h1> Registros </h1>
       <div id="collage">
           <iframe width="520" height="720" id="video"
@@ -105,8 +114,8 @@ let delArte = [
         ]
 </code></pre>
 <h1> Diseño de la instalación </h1>
-<h1> interactuar con el sistema <a href="">acá</a></h1>
-<h1> ver historial de cambios del sistema <a href="">acá</a></h1>
+<h1> interactuar con el sistema <a href="https://karen-pal.github.io/poseShader/">acá</a></h1>
+<h1> ver historial de cambios del sistema <a href="https://github.com/karen-pal/poseShader/commits/main">acá</a></h1>
   </body>
 	<script>hljs.highlightAll();</script>
 </html>
