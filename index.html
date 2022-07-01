@@ -53,6 +53,8 @@
     uniform vec2 u_left;
     uniform float u_time;
     uniform float u_touch;
+    uniform vec2 u_hands_shoulders;
+    uniform vec2 u_hands_nose;
 
     float lessCoord = min( u_resolution.x, u_resolution.y );
     vec2 resRatio = u_resolution / vec2( lessCoord );
@@ -67,7 +69,13 @@
       vec2 st = gl_FragCoord.xy / u_resolution;
       float pct = 0.0;
       pct = distance(st, vec2(.5));
-      gl_FragColor = vec4( mix(pct,grad.x,grad.x),.1, mix(grad.y,pct,grad.y), theta );
+      vec4 res;
+      if (u_hands_nose.x <.1 || u_hands_nose.y <.1){
+        res= vec4(.1,.1,.1, 0.2);
+      } else {
+        res= vec4( mix(pct,grad.x,grad.x),.1, mix(grad.y,pct,grad.y), theta);
+      }
+       gl_FragColor = res;
     }
   </script>
   <script id="vertex-shader" type="x-shader/x-vertex">
@@ -137,6 +145,8 @@
     var uTime = new Uniform( 'u_time', '1f' );
     var uLeft = new Uniform( 'u_left', '2f' );
     var uTouch = new Uniform( 'u_touch', '1f' );
+    var uHandsShoulders = new Uniform( 'u_hands_shoulders', '2f' );
+    var uHandsNose = new Uniform( 'u_hands_nose', '2f' );
     // create position attrib
     var billboard = new Rect( gl );
     var positionLocation = gl.getAttribLocation( program, 'a_position' );
