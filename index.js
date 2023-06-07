@@ -3,20 +3,20 @@ const canvasElement = document.getElementsByClassName('output_canvas')[0];
 const canvasCtx = canvasElement.getContext('2d');
 const landmarkContainer = document.getElementsByClassName('landmark-grid-container')[0];
 const grid = new LandmarkGrid(landmarkContainer,
-{
-  connectionColor: "rgb(0,255,0)",
-    landmarkColor:"rgb(255,0,0)",
-    axesColor:0x0,
-  range: 2,
-  fitToGrid: true,
-  landmarkSize: 4,
-  numCellsPerAxis: 4,
-  showHidden: false,
-  centered: true,
-    backgroundColor:"rgba(255,255,255,0)",
-}
+                {
+                  connectionColor: "rgb(0,255,0)",
+                    landmarkColor:"rgb(255,0,0)",
+                    axesColor:0x0,
+                  range: 2,
+                  fitToGrid: true,
+                  landmarkSize: 4,
+                  numCellsPerAxis: 4,
+                  showHidden: false,
+                  centered: true,
+                    backgroundColor:"rgba(255,255,255,0)",
+                }
 
-);
+                );
 //console.log(grid);
 
 function onResults(results) {
@@ -127,7 +127,7 @@ const camera = new Camera(videoElement, {
   onFrame: async () => {
     await pose.send({image: videoElement});
   },
-  width: 1920,
-  height: 1080
+  width: 1280,
+  height: 720
 });
 camera.start();
