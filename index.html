@@ -64,7 +64,7 @@
       vec2 grad = abs( ( gl_FragCoord.xy  - u_mouse ) / u_resolution * resRatio );
       // could do something fun with u_time
       float theta = .5;
-      //if (u_touch==1.){ theta = 1./((u_left.x+.2)*abs(sin(u_time)));} //sin( u_time ) * 0.5 + 0.5;}
+      if (u_touch==1.){ theta = 1./((u_left.x+.2)*abs(sin(u_time)));} //sin( u_time ) * 0.5 + 0.5;}
       float screenX = gl_FragCoord.x / u_resolution.x;
       float screenY = gl_FragCoord.y / u_resolution.y;
       vec2 st = gl_FragCoord.xy / u_resolution;
@@ -72,11 +72,11 @@
       pct = distance(st, vec2(.5));
       vec4 res;
        res= vec4( mix(pct,grad.x,grad.x),.1, mix(grad.y,pct,grad.y), theta);
-      //if (u_hands_nose.x <.1 || u_hands_nose.y <.1){
-      //  res= vec4(.1,.1,.1, 0.2);
-      //} else {
-      //  res= vec4( mix(pct,grad.x,grad.x),.1, mix(grad.y,pct,grad.y), theta);
-      //}
+      if (u_hands_nose.x <.1 || u_hands_nose.y <.1){
+        res= vec4(.1,.1,.1, 0.2);
+      } else {
+        res= vec4( mix(pct,grad.x,grad.x),.1, mix(grad.y,pct,grad.y), theta);
+      }
        gl_FragColor = res;
     }
   </script>
